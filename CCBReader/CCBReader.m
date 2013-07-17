@@ -585,10 +585,12 @@
         
         if (setProp)
         {
-            //if ([[fnt lowercaseString] hasSuffix:@".ttf"])
-            //{
-            //    fnt = [[fnt lastPathComponent] stringByDeletingPathExtension];
-            //}
+#ifdef __CC_PLATFORM_IOS
+            if ([[fnt lowercaseString] hasSuffix:@".ttf"])
+            {
+                fnt = [[fnt lastPathComponent] stringByDeletingPathExtension];
+            }
+#endif
             [node setValue:fnt forKey:name];
         }
     }
@@ -1164,15 +1166,16 @@
 
 + (void) callDidLoadFromCCBForNodeGraph:(CCNode*)nodeGraph
 {
-    if ([nodeGraph respondsToSelector:@selector(didLoadFromCCB)])
-    {
-        [nodeGraph performSelector:@selector(didLoadFromCCB)];
-    }
-    
     CCNode* child = NULL;
     CCARRAY_FOREACH(nodeGraph.children, child)
     {
         [CCBReader callDidLoadFromCCBForNodeGraph:child];
+    }
+    
+    // NOTE: This has been modified to call from the bottom UP instead of from the top down.
+    if ([nodeGraph respondsToSelector:@selector(didLoadFromCCB)])
+    {
+        [nodeGraph performSelector:@selector(didLoadFromCCB)];
     }
 }
 
