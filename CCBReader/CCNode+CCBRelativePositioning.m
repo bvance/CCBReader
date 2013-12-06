@@ -38,8 +38,8 @@ float ccbResolutionScale = 0;
     }
     else if (type == kCCBPositionTypePercent)
     {
-        absPt.x = (int)(containerSize.width * pt.x / 100.0f);
-        absPt.y = (int)(containerSize.height * pt.y / 100.0f);
+        absPt.x = (containerSize.width * pt.x / 100.0f);
+        absPt.y = (containerSize.height * pt.y / 100.0f);
     }
     else if (type == kCCBPositionTypeMultiplyResolution)
     {
